@@ -64,29 +64,42 @@ export default {
 		// const greeting = await stub.sayHello("world");
 
 		// my code
-		const requestData = request.json();
-		const userPrompt = requestData["prompt"] ;
-		mode = "get_started";
+		const requestData = await request.json();
+		const userPrompt = requestData.prompt ;
+		const mode = requestData.mode;
 
 		const modePrompts = {
-			"get_started":
-			"you will help this user get started on their coding probelm",
-			"edge_case":
-			"you will help this user idenfy the edge cases they are not account for based on problem description",
-			"optimize":
-			"you will help this user optimize their already working solution"
+			"get_started": `
+			You are a coding professor, you will guide this programmer on how to get started on their coding problem. 
+			Supply them with patterns for them to consider using like common algorithms used in these sorts of problems.
+			You will NOT give them the solution to this problem, they need to learn to reach the solution themselves.
+			`,
+			"edge_case": `
+			You are a coding professor, you will guide this programmer on how to account for edge cases on their coding problem based on the solution they provide.
+			You will suggest parts of their code that need to be addressed and point them in the direction of how they may need to rethinbk their implementation.
+			you wil NOT give them the solution to this problem, they need to learn to reach the solution themselves.
+			`,
+			"optimize": `
+			You are a coding professor, you will guide this programmer on how to optimize their already working solution based on the coding problem provided.
+			Please do a runtime aynalsis of the solution provided and tell the user what it is as well as what the expected solutions runtime would be.
+			If the user is using the proper algorithm to solve the problem let them know this and give them hints as to what is slowing down their solution.
+			If the user is using the improper algorithm to solve this problem suggest hints on how they may go about the problem differently comapred to what they have done.
+			`,
 		};
 		
 		const mode_selected = modePrompts[mode];
 
+		const sendData = {
+			messages: [
+				{role:"system", content: mode_selected},
+				{role:"user", content: userPrompt}
+			]
+		};
+		console.log(sendData)
 
-		messages: [
-			{role:"system", content: mode_selected},
-			{role:"user", content: userPrompt}
-		];
+		const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", sendData)
+		const retVal = aiResponse.response
 
-		const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", { messages })
-
-		return Response.json({message: aiResponse.response})
+		return Response.json({message: retVal})
 	},
 };
