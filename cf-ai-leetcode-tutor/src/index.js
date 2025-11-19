@@ -57,22 +57,36 @@ export default {
 		//
 		// Requests from all Workers to the Durable Object instance named "foo"
 		// will go to a single remote Durable Object instance.
-		const stub = env.MY_DURABLE_OBJECT.getByName("foo");
+		// const stub = env.MY_DURABLE_OBJECT.getByName("foo");
 
 		// Call the `sayHello()` RPC method on the stub to invoke the method on
 		// the remote Durable Object instance.
-		const greeting = await stub.sayHello("world");
+		// const greeting = await stub.sayHello("world");
 
 		// my code
+		const requestData = request.json();
+		const userPrompt = requestData["prompt"] ;
+		mode = "get_started";
 
+		const modePrompts = {
+			"get_started":
+			"you will help this user get started on their coding probelm",
+			"edge_case":
+			"you will help this user idenfy the edge cases they are not account for based on problem description",
+			"optimize":
+			"you will help this user optimize their already working solution"
+		};
 		
+		const mode_selected = modePrompts[mode];
 
 
+		messages: [
+			{role:"system", content: mode_selected},
+			{role:"user", content: userPrompt}
+		];
 
+		const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", { messages })
 
-
-
-
-		return new Response(greeting);
+		return Response.json({message: aiResponse.response})
 	},
 };
