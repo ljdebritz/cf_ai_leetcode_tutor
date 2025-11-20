@@ -20,7 +20,8 @@ form.addEventListener("submit", async (e) => {
         "probNum": probNum,
         "prompt": prompt,
         "code": solution,
-        "mode": mode
+        "mode": mode,
+        "userID": checkCookie(),
     }
 
    
@@ -30,7 +31,29 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify(data)
       });
       const dataReturned = await res.json();
-      const html = "<span><p>" + marked.parse(dataReturned.message) + "</p></spam>"
+      const html = "<span><p>" + marked.parse(dataReturned.message) + "</p><spam>"
       resField.innerHTML = html
       console.log(dataReturned)
   });
+
+  function checkCookie() {
+    const userCookie = "userID=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArr = decodedCookie.split(";")
+    for (const cook of cookieArr) {
+      const trimmedCook = cook.trim();
+      if (trimmedCook.startsWith(userCookie)){
+        const cookSplit = trimmedCook.split('=');
+        return cookSplit[1];
+      }
+    }
+    return createCookie();
+  }
+
+
+  function createCookie(){
+    yearInSecs = 60 * 60 * 24 * 365;
+    const newId = crypto.randomUUID();
+    document.cookie = `userID=${newId}; max-age=${yearInSecs}; path=/`;
+    return newId;
+  }
