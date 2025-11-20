@@ -26,5 +26,8 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify(data)
       });
       const dataReturned = await res.json();
+      const resField = document.getElementById("aiResponse")
+      const html = "<span><p>" + marked.parse(dataReturned.message) + "</p></spam>"
+      resField.innerHTML += html
       console.log(dataReturned)
   });

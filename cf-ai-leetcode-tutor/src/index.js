@@ -52,16 +52,7 @@ export default {
 	 * @returns {Promise<Response>} The response to be sent back to the client
 	 */
 	async fetch(request, env, ctx) {
-		// Create a stub to open a communication channel with the Durable Object
-		// instance named "foo".
-		//
-		// Requests from all Workers to the Durable Object instance named "foo"
-		// will go to a single remote Durable Object instance.
-		// const stub = env.MY_DURABLE_OBJECT.getByName("foo");
-
-		// Call the `sayHello()` RPC method on the stub to invoke the method on
-		// the remote Durable Object instance.
-		// const greeting = await stub.sayHello("world");
+		
 
 		// my code
 		const requestData = await request.json();
@@ -75,6 +66,7 @@ export default {
 			You are a coding professor, you will guide this programmer on how to get started on their coding problem. 
 			Supply them with patterns for them to consider using like common algorithms used in these sorts of problems.
 			You will NOT give them the solution to this problem, they need to learn to reach the solution themselves.
+			Please suggest simplier leetcode probelms the student could try and master before returning to this problem in the future.
 			`,
 			"edge_case": `
 			You are a coding professor, you will guide this programmer on how to account for edge cases on their coding problem based on the solution they provide.
@@ -103,6 +95,7 @@ export default {
 
 		const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", sendData)
 		const retVal = aiResponse.response
+		// const retVal = "hey hows it going lets try marldown **hello**"
 
 		return Response.json({message: retVal})
 	},
