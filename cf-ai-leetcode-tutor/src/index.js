@@ -65,8 +65,10 @@ export default {
 
 		// my code
 		const requestData = await request.json();
-		const userPrompt = requestData.prompt ;
+		const prompt = requestData.prompt ;
 		const mode = requestData.mode;
+		const probNum = requestData.probNum;
+		const solution = requestData.code;
 
 		const modePrompts = {
 			"get_started": `
@@ -86,16 +88,18 @@ export default {
 			If the user is using the improper algorithm to solve this problem suggest hints on how they may go about the problem differently comapred to what they have done.
 			`,
 		};
+		const problem = "We are discussing leetcode problem number: " + probNum;
+		const userPrompt = "Inital thought process: " + prompt + "\n current attemped solution:\n" + solution;
 		
 		const mode_selected = modePrompts[mode];
-
+		// need to add a system prompt that is the number of the problem so the model has that as key context
 		const sendData = {
 			messages: [
+				{role:"system", content: problem},
 				{role:"system", content: mode_selected},
 				{role:"user", content: userPrompt}
 			]
 		};
-		console.log(sendData)
 
 		const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", sendData)
 		const retVal = aiResponse.response
