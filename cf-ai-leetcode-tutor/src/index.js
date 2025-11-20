@@ -28,6 +28,8 @@ export class MyDurableObject extends DurableObject {
 	 */
 	constructor(ctx, env) {
 		super(ctx, env);
+		this.state = ctx;
+    	this.env = env;
 	}
 
 	async fetch(request){
@@ -42,6 +44,7 @@ export class MyDurableObject extends DurableObject {
 		modes[mode].push(probNum)
 
 		await this.state.storage.put("modes",modes);
+		console.log("Stored modes:", modes);
 		return Response.json(modes)
 
 	}
@@ -67,10 +70,17 @@ export default {
 		const solution = requestData.code;
 		const userId = requestData.userId;
 
+		// const id = env.MY_DURABLE_OBJECT.getByName(userId);
 		const id = env.MY_DURABLE_OBJECT.idFromName(userId);
-		const userDo = env.MY_DURABLE_OBJECT.get(id);
+    	const userDo = env.MY_DURABLE_OBJECT.get(id);
 
-		const prevCalls = await userDo.fetch(request);
+		const prevCalls = await userDo.fetch(  
+			new Request("https://url", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(requestData)
+				})
+		);
 		const userModes = await prevCalls.json();
 
 		let previousStruggles = "Here is a list of problems the user as aske about and which mode they selected for each problem, use this as context for what they have trouble with on certain patterns or problem types\n"
