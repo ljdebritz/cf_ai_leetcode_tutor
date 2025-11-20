@@ -30,15 +30,20 @@ export class MyDurableObject extends DurableObject {
 		super(ctx, env);
 	}
 
-	/**
-	 * The Durable Object exposes an RPC method sayHello which will be invoked when when a Durable
-	 *  Object instance receives a request from a Worker via the same method invocation on the stub
-	 *
-	 * @param {string} name - The name provided to a Durable Object instance from a Worker
-	 * @returns {Promise<string>} The greeting to be sent back to the Worker
-	 */
-	async sayHello(name) {
-		return `Hello, ${name}!`;
+	async fetch(request){
+		const data = await request.json();
+		const probNum = data.probNum;
+		const mode = data.mode;
+		let modes = (await this.state.storage.get("modes")) || {
+			get_started: [],
+			edge_case: [],
+			optimize: []
+    	};
+		modes[mode].push(probNum)
+
+		await this.state.storage.put("modes",modes);
+		return Response.json(modes)
+
 	}
 }
 
@@ -60,6 +65,20 @@ export default {
 		const mode = requestData.mode;
 		const probNum = requestData.probNum;
 		const solution = requestData.code;
+		const userId = requestData.userId;
+
+		const id = env.MY_DURABLE_OBJECT.idFromName(userId);
+		const userDo = env.MY_DURABLE_OBJECT.get(id);
+
+		const prevCalls = await userDo.fetch(request);
+		const userModes = await prevCalls.json();
+
+		let previousStruggles = "Here is a list of problems the user as aske about and which mode they selected for each problem, use this as context for what they have trouble with on certain patterns or problem types\n"
+		for (const [modeKey, problems] of Object.entries(userModes)) {
+			previousStruggles += `${modeKey}: ${problems.join(", ") || "none"}\n`;
+		}
+
+
 
 		const modePrompts = {
 			"get_started": `
@@ -87,6 +106,7 @@ export default {
 		// need to add a system prompt that is the number of the problem so the model has that as key context
 		const sendData = {
 			messages: [
+				{role:"system", content: previousStruggles},
 				{role:"system", content: problem},
 				{role:"system", content: mode_selected},
 				{role:"user", content: userPrompt}

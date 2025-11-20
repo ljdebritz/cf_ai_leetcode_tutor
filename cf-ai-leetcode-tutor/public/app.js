@@ -21,7 +21,7 @@ form.addEventListener("submit", async (e) => {
         "prompt": prompt,
         "code": solution,
         "mode": mode,
-        "userID": checkCookie(),
+        "userId": checkCookie(),
     }
 
    
