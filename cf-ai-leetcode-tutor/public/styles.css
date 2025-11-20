@@ -1,0 +1,174 @@
+/* styles.css (Final Updated) */
+
+/* --- Universal Box Sizing, Font, and Scroll Behavior --- */
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Add smooth scrolling when navigation links/actions cause a jump */
+html {
+    scroll-behavior: smooth;
+}
+
+/* --- Body and Layout --- */
+body {
+    /* Dark Theme */
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+
+    /* Center content horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- Main Container (Form) --- */
+#formInfo {
+    background-color: #1f1f1f;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 550px;
+
+    /* Center everything inside the form */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* --- Headings --- */
+h1 {
+    color: #4a90e2;
+    margin-bottom: 25px;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+/* --- Labels (Larger and Bold) --- */
+/* The main labels for 'Problem Number', 'Mode', 'Thought', and 'Code' */
+label {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #f5f5f5;
+    width: 90%; /* Match input width for better visual flow */
+    text-align: left; /* Align text left within its 90% container */
+}
+
+/* --- Input Fields (Text and Textarea) --- */
+input[type="text"],
+textarea {
+    width: 90%; /* Using 90% of the #formInfo width */
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    font-size: 1em;
+    resize: vertical;
+}
+
+/* Specific sizing for textareas to allow more text */
+#thought {
+    height: 120px;
+}
+
+#solution {
+    height: 250px;
+}
+
+/* Focus styles for inputs */
+input[type="text"]:focus,
+textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+/* --- Mode Radio Buttons Layout --- */
+#modeForm {
+    /* The formInfo parent centers this entire block */
+    text-align: center; 
+    width: 90%; 
+    display: flex; /* Use flexbox to easily space and center contents */
+    justify-content: space-around; /* Distribute space evenly between items */
+    margin-bottom: 15px;
+}
+
+/* Labels for the radio options (Get Started, Optimize, Edge Case) */
+#modeForm label {
+    display: inline-flex; /* Keep labels inline with the radio button */
+    align-items: center; /* Vertically align text and radio button */
+    font-weight: normal; /* Less bold than main labels */
+    font-size: 1em;
+    margin: 0; /* Remove top/bottom margin */
+    color: #e0e0e0;
+    width: auto; /* Allow items to take only the necessary width */
+}
+
+#modeForm input[type="radio"] {
+    margin-right: 5px;
+    margin-left: 0;
+    /* Resetting input styles specific to radio buttons */
+    width: auto;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+/* --- Submit Button --- */
+button[type="submit"] {
+    width: 90%; /* Match the width of the input fields */
+    padding: 12px;
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #357bd8;
+}
+
+/* --- AI Response Area --- */
+#aiResponse {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 800px;
+    min-height: 100px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+/* Styling for content rendered inside the response area (Markdown) */
+#aiResponse h2, #aiResponse h3 {
+    color: #4a90e2;
+}
+#aiResponse pre {
+    background-color: #2c2c2c;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    border: 1px solid #4a90e2;
+}
+#aiResponse code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: #e0e0e0;
+}
