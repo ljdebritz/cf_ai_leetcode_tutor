@@ -11,6 +11,10 @@ form.addEventListener("submit", async (e) => {
         alert("Please fill out all fields before submitting.");
         return;
     }
+    const loader = "<p>LeetCoach is thinking...</p>"
+    const resField = document.getElementById("aiResponse")
+    resField.innerHTML = loader
+
 
     const data = {
         "probNum": probNum,
@@ -26,8 +30,7 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify(data)
       });
       const dataReturned = await res.json();
-      const resField = document.getElementById("aiResponse")
       const html = "<span><p>" + marked.parse(dataReturned.message) + "</p></spam>"
-      resField.innerHTML += html
+      resField.innerHTML = html
       console.log(dataReturned)
   });
