@@ -60,8 +60,6 @@ export default {
 	 * @returns {Promise<Response>} The response to be sent back to the client
 	 */
 	async fetch(request, env, ctx) {
-		
-
 		// my code
 		const requestData = await request.json();
 		const prompt = requestData.prompt ;
@@ -70,10 +68,9 @@ export default {
 		const solution = requestData.code;
 		const userId = requestData.userId;
 
-		// const id = env.MY_DURABLE_OBJECT.getByName(userId);
 		const id = env.MY_DURABLE_OBJECT.idFromName(userId);
     	const userDo = env.MY_DURABLE_OBJECT.get(id);
-
+		// need to pass as a request object
 		const prevCalls = await userDo.fetch(  
 			new Request("https://url", {
 				method: "POST",
@@ -82,10 +79,9 @@ export default {
 				})
 		);
 		const userModes = await prevCalls.json();
-
-		let previousStruggles = "Here is a list of problems the user as aske about and which mode they selected for each problem, use this as context for what they have trouble with on certain patterns or problem types\n"
+		let previousStruggles = "Here is a list of problems the user as ask about and which mode they selected for each problem, use this as context for what they have trouble with on certain patterns or problem types\n"
 		for (const [modeKey, problems] of Object.entries(userModes)) {
-			previousStruggles += `${modeKey}: ${problems.join(", ") || "none"}\n`;
+			previousStruggles += `${modeKey}: ${problems.join(", ")}\n`;
 		}
 
 
@@ -120,13 +116,13 @@ export default {
 				{role:"system", content: problem},
 				{role:"system", content: mode_selected},
 				{role:"user", content: userPrompt}
-			]
+			],
+			max_tokens: 2048
 		};
 
 		const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", sendData)
+		console.log("AI full response:", aiResponse);
 		const retVal = aiResponse.response
-		// const retVal = "hey hows it going lets try marldown **hello**"
-
 		return Response.json({message: retVal})
 	},
 };
