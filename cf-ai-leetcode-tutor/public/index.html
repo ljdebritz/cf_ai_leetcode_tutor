@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
     <form id="formInfo">
         <label>Leetcode Problem Number:</label><br>
-        <input type="text" id="probNum"><br>
+        <input type="text" id="probNum" maxlength="6"><br>
         <br>
         <label>Mode:</label><br>
         <div id="modeForm">
@@ -22,11 +22,11 @@
           <label for="edgeCase">Edge Case</label><br>
         </div>
         <br>
-        <label>Inital though process</label><br>
-        <textarea id="thought" style="width: 300px; height: 75px;"></textarea><br>
+        <label>Inital though process:</label><br>
+        <textarea id="thought" style="width: 500px; height: 100px;" maxlength="500"></textarea><br>
         <br>
         <label>Your Code:</label><br>
-        <textarea id="solution" style="width: 300px; height: 75px;"></textarea>
+        <textarea id="solution" style="width: 500px; height: 100px;" maxlength="500"></textarea>
         <br>
         <br>
         <button type="submit">Submit</button>
