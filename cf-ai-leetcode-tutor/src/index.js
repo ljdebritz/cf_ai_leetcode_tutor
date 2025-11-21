@@ -72,11 +72,7 @@ export default {
 	 */
 	async fetch(request, env, ctx) {
 		// my code
-		try{
-			const requestData = await request.json();
-		} catch(e) {
-			throw new Error("Invalid JSON in request body");
-		}
+		const requestData = await request.json();
 		const prompt = requestData.prompt ;
 		const mode = requestData.mode;
 		const probNum = requestData.probNum;

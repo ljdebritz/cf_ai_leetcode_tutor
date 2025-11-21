@@ -7,13 +7,14 @@ form.addEventListener("submit", async (e) => {
     const solution = document.getElementById("solution").value;
     const mode = document.querySelector('input[name="mode"]:checked')?.value;
     
-    if (!probNum || !prompt || !solution || !mode) {
+    if (!probNum || !prompt || !mode) {
         alert("Please fill out all fields before submitting.");
         return;
     }
     const loader = "<p>LeetCoach is thinking...</p>"
     const resField = document.getElementById("aiResponse")
     resField.innerHTML = loader
+    resField.scrollIntoView({ behavior: "smooth", block: "start" });
 
 
     const data = {
@@ -33,7 +34,7 @@ form.addEventListener("submit", async (e) => {
       const dataReturned = await res.json();
       const html = "<span><p>" + marked.parse(dataReturned.message) + "</p><spam>"
       resField.innerHTML = html
-      console.log(dataReturned)
+      resField.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   function checkCookie() {
@@ -57,3 +58,4 @@ form.addEventListener("submit", async (e) => {
     document.cookie = `userID=${newId}; max-age=${yearInSecs}; path=/`;
     return newId;
   }
+
