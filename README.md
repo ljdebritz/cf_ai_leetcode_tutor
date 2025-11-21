@@ -2,7 +2,7 @@
 
 ## AI leetcode Tutor
 
-## Click [HERE](cf-ai-leetcode-tutor.ljdebritz.workers.dev) to check out the leetcode tutor!
+## Click [HERE](https://cf-ai-leetcode-tutor.ljdebritz.workers.dev/) to check out the leetcode tutor!
 
 ### Overview
 Grinding LeetCode to improve knowledge of data structures and algorithms is a universal experience for those looking for work in the software field.
